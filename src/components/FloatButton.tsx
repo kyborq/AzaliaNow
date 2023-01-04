@@ -1,38 +1,34 @@
 import React from 'react';
-import {StyleSheet, TouchableNativeFeedback, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {TIcon} from '../icons';
 import {Icon} from './Icon';
 
 type Props = {
+  icon: TIcon;
   onPress?: () => void;
 };
 
-export const FloatButton: React.FC<Props> = ({onPress}) => {
+export const FloatButton: React.FC<Props> = ({icon, onPress}) => {
   return (
-    <View style={styles.container}>
-      <TouchableNativeFeedback onPress={onPress}>
-        <View style={styles.button}>
-          <Icon icon="add" />
-        </View>
-      </TouchableNativeFeedback>
-    </View>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+        <Icon icon={icon} />
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#222F3E',
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    margin: 40,
-  },
   button: {
     width: 56,
     height: 56,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 28,
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: '#222F3E',
+    right: 0,
+    margin: 40,
   },
 });

@@ -1,69 +1,53 @@
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-import {Check} from '../components/Check';
-import {Icon} from '../components/Icon';
+import React from 'react';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
+
+import {ScreenProps} from '../components/Navigation';
+import {Logo} from '../components/Logo';
+import {FloatButton} from '../components/FloatButton';
 import {Task} from '../components/Task';
+import {useAppDispatch, useAppSelector} from '../redux';
+import {completeTask, deleteTask} from '../redux/taskSlice';
+import {Swipable} from '../components/Swipable';
 
-type TTask = {
-  id: number;
-  label: string;
-  completed?: boolean;
-};
+import {uuid4} from '../uuid4';
 
-const Home = () => {
-  const [todoList, setTodoList] = useState<TTask[]>([
-    {id: 0, label: 'Сделать тестовое', completed: true},
-    {id: 1, label: 'Сдать тестовое', completed: false},
-    {id: 2, label: 'Начать зарабатывать', completed: false},
-    {id: 3, label: 'Начать зарабатывать', completed: false},
-  ]);
+export const Home = ({navigation}: ScreenProps) => {
+  const dispatch = useAppDispatch();
+  const tasks = useAppSelector(state => state.task.tasks);
 
-  const isDarkMode = useColorScheme() === 'dark';
+  const handleAddTask = () => navigation.navigate('AddTask');
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? '#222F3E' : '#FAFAFE',
+  const handleCompleteTask = (id: number) => {
+    dispatch(completeTask(id));
   };
 
-  const completeTask = (id: number) => {
-    const todo = todoList.map(task =>
-      task.id === id ? {...task, completed: !task.completed} : task,
-    );
-    setTodoList(todo);
+  const handleDeleteTask = (id: number) => {
+    dispatch(deleteTask(id));
   };
+
+  const taskList = tasks.map(task => (
+    <Swipable key={uuid4()} onSwipe={() => handleDeleteTask(task.id)}>
+      <Task
+        label={task.label}
+        completed={task.completed}
+        onComplete={() => handleCompleteTask(task.id)}
+      />
+    </Swipable>
+  ));
 
   return (
-    <SafeAreaView style={[styles.screen, backgroundStyle]}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <SafeAreaView style={styles.screen}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{flexGrow: 1, paddingHorizontal: 20}}
-        style={backgroundStyle}>
-        <View style={styles.logo}>
-          <Icon icon="logo" />
-          <Text style={styles.logoText}>AzaliaNow</Text>
+        contentContainerStyle={styles.content}
+        stickyHeaderIndices={[0]}>
+        <View style={styles.header}>
+          <Logo />
         </View>
-        {todoList.map((task, index) => {
-          return (
-            <Task
-              key={index}
-              label={task.label}
-              completed={task.completed}
-              onComplete={() => completeTask(task.id)}
-            />
-          );
-        })}
+        {taskList}
+        {!tasks.length && <Text style={styles.empty}>Список пуст</Text>}
       </ScrollView>
+      <FloatButton icon="add" onPress={handleAddTask} />
     </SafeAreaView>
   );
 };
@@ -71,17 +55,24 @@ const Home = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: '#FAFAFE',
   },
-  logo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 18,
+  header: {
+    marginTop: 90,
+    paddingTop: 20,
+    marginHorizontal: -20,
+    paddingHorizontal: 20,
+    backgroundColor: '#FAFAFE',
+    marginBottom: 5,
   },
-  logoText: {
-    color: '#FF003C',
-    fontSize: 36,
-    marginLeft: 18,
+  content: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginVertical: -10,
+    paddingBottom: 120,
+  },
+  empty: {
+    fontSize: 24,
+    color: '#c7c7c7',
   },
 });
-
-export default Home;

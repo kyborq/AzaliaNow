@@ -3,7 +3,7 @@ import {Animated} from 'react-native';
 import {Icon} from './Icon';
 
 export const Spinner = () => {
-  const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const interpolateRotation = fadeAnim.interpolate({
     inputRange: [0, 1],
@@ -27,9 +27,7 @@ export const Spinner = () => {
   }, [fadeAnim]);
 
   return (
-    <Animated.View
-      style={animatedStyle} // Special animatable View
-    >
+    <Animated.View style={animatedStyle}>
       <Icon icon="spinner" />
     </Animated.View>
   );

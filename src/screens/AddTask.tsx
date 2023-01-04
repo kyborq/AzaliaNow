@@ -1,21 +1,20 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+
 import {Button} from '../components/Button';
 import {Header} from '../components/Header';
 import {Input} from '../components/Input';
-import {RootStackParamList} from '../components/Navigation';
+import {ScreenProps} from '../components/Navigation';
 import {useAppDispatch} from '../redux';
 import {addTask} from '../redux/taskSlice';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'AddTask', 'MyStack'>;
-
-export const AddTaskScreen = ({navigation}: Props) => {
+export const AddTask = ({navigation}: ScreenProps) => {
   const [task, setTask] = useState('');
 
   const dispatch = useAppDispatch();
 
   const handleBack = () => navigation.goBack();
+
   const handleAddTask = () => {
     dispatch(addTask(task));
     navigation.goBack();

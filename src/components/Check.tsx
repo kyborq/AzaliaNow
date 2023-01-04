@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, TouchableNativeFeedback, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+
 import {Icon} from './Icon';
 
 type Props = {
@@ -12,26 +13,25 @@ export const Check: React.FC<Props> = ({checked, onCheck}) => {
     backgroundColor: checked ? '#222F3E' : '#FAFAFE',
   };
 
+  const hitSlop = {bottom: 20, left: 20, right: 20, top: 20};
+
   return (
-    <View style={[styles.box, checkedStyle]}>
-      <TouchableNativeFeedback onPress={onCheck}>
-        <View style={styles.container}>{checked && <Icon icon="check" />}</View>
-      </TouchableNativeFeedback>
-    </View>
+    <TouchableOpacity onPress={onCheck} hitSlop={hitSlop}>
+      <View style={[styles.container, checkedStyle]}>
+        {checked && <Icon icon="check" />}
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  box: {
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 20,
     height: 20,
     borderWidth: 2,
     borderColor: '#222F3E',
     borderRadius: 4,
-  },
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
   },
 });

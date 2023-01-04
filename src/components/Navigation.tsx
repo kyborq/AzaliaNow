@@ -1,13 +1,12 @@
 import React from 'react';
-
 import {
   createNativeStackNavigator,
-  NativeStackNavigationProp,
+  NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 
-import {HomeScreen} from '../screens/HomeScreen';
-import {AddTaskScreen} from '../screens/AddTaskScreen';
-import {WelcomeScreen} from '../screens/WelcomeScreen';
+import {Home} from '../screens/Home';
+import {AddTask} from '../screens/AddTask';
+import {Welcome} from '../screens/Welcome';
 
 export type RootStackParamList = {
   Welcome: undefined;
@@ -17,6 +16,8 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+export type ScreenProps = NativeStackScreenProps<RootStackParamList>;
+
 export const Navigation = () => {
   return (
     <Stack.Navigator
@@ -24,9 +25,9 @@ export const Navigation = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="AddTask" component={AddTaskScreen} />
+      <Stack.Screen name="Welcome" component={Welcome} />
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="AddTask" component={AddTask} />
     </Stack.Navigator>
   );
 };
