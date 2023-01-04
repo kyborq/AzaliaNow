@@ -34,7 +34,7 @@ const style = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    backgroundColor: '#fff',
+    backgroundColor: '#FAFAFE',
     elevation: 5,
     borderRadius: 8,
     marginBottom: 16,
