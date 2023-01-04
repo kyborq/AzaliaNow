@@ -7,11 +7,20 @@ import {RootStackParamList} from '../components/Navigation';
 import {Logo} from '../components/Logo';
 import {FloatButton} from '../components/FloatButton';
 import {Task} from '../components/Task';
+import {useAppDispatch, useAppSelector} from '../redux';
+import {completeTask} from '../redux/taskSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home', 'MyStack'>;
 
 export const HomeScreen = ({navigation}: Props) => {
+  const dispatch = useAppDispatch();
+  const tasks = useAppSelector(state => state.task.tasks);
+
   const handleAddTask = () => navigation.navigate('AddTask');
+
+  const handleCompleteTask = (id: number) => {
+    dispatch(completeTask(id));
+  };
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -22,17 +31,14 @@ export const HomeScreen = ({navigation}: Props) => {
         <View style={styles.logo}>
           <Logo />
         </View>
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
-        <Task label="sfsdf" />
+        {tasks.map(task => (
+          <Task
+            key={task.id}
+            label={task.label}
+            completed={task.completed}
+            onComplete={() => handleCompleteTask(task.id)}
+          />
+        ))}
       </ScrollView>
       <FloatButton onPress={handleAddTask} />
     </SafeAreaView>
