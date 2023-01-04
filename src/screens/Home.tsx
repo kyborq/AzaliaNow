@@ -17,11 +17,11 @@ export const Home = ({navigation}: ScreenProps) => {
 
   const handleAddTask = () => navigation.navigate('AddTask');
 
-  const handleCompleteTask = (id: number) => {
+  const handleCompleteTask = (id: string) => {
     dispatch(completeTask(id));
   };
 
-  const handleDeleteTask = (id: number) => {
+  const handleDeleteTask = (id: string) => {
     dispatch(deleteTask(id));
   };
 

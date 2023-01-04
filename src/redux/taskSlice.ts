@@ -1,7 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {uuid4} from '../uuid4';
 
 export type TTask = {
-  id: number;
+  id: string;
   label: string;
   completed: boolean;
 };
@@ -12,9 +13,9 @@ interface ITaskSlice {
 
 const initialState: ITaskSlice = {
   tasks: [
-    {id: 0, label: 'Сделать тестовое', completed: true},
-    {id: 1, label: 'Сдать тестовое', completed: false},
-    {id: 2, label: 'Начать зарабатывать', completed: false},
+    {id: uuid4(), label: 'Сделать тестовое', completed: true},
+    {id: uuid4(), label: 'Сдать тестовое', completed: false},
+    {id: uuid4(), label: 'Начать зарабатывать', completed: false},
   ],
 };
 
@@ -26,21 +27,21 @@ const taskSlice = createSlice({
       const label = action.payload;
 
       const task: TTask = {
-        id: state.tasks.length,
+        id: uuid4(),
         label,
         completed: false,
       };
 
       state.tasks = [...state.tasks, task];
     },
-    completeTask(state, action: PayloadAction<number>) {
+    completeTask(state, action: PayloadAction<string>) {
       const id = action.payload;
 
       state.tasks = state.tasks.map(task =>
         task.id === id ? {...task, completed: !task.completed} : task,
       );
     },
-    deleteTask(state, action: PayloadAction<number>) {
+    deleteTask(state, action: PayloadAction<string>) {
       const id = action.payload;
 
       state.tasks = state.tasks.filter(task => task.id !== id);
