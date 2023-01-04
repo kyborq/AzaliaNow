@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../components/Navigation';
@@ -10,6 +10,7 @@ import {Task} from '../components/Task';
 import {useAppDispatch, useAppSelector} from '../redux';
 import {completeTask, deleteTask} from '../redux/taskSlice';
 import {SwipableItem} from '../components/SwipeList';
+import {uuid4} from '../uuid4';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home', 'MyStack'>;
 
@@ -36,14 +37,15 @@ export const HomeScreen = ({navigation}: Props) => {
           <Logo />
         </View>
         {tasks.map(task => (
-          <SwipableItem key={task.id} onSwipe={() => handleDeleteTask(task.id)}>
+          <SwipableItem key={uuid4()} onSwipe={() => handleDeleteTask(task.id)}>
             <Task
-              label={`${task.id} ${task.label}`}
+              label={task.label}
               completed={task.completed}
               onComplete={() => handleCompleteTask(task.id)}
             />
           </SwipableItem>
         ))}
+        {!tasks.length && <Text>Список пуст</Text>}
       </ScrollView>
       <FloatButton onPress={handleAddTask} />
     </SafeAreaView>
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   content: {
-    flexGrow: 1,
+    // flexGrow: 1,
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginVertical: -10,

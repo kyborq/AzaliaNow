@@ -26,7 +26,7 @@ const taskSlice = createSlice({
       const label = action.payload;
 
       const task: TTask = {
-        id: state.tasks.length + 1,
+        id: state.tasks.length,
         label,
         completed: false,
       };

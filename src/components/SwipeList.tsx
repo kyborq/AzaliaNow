@@ -16,6 +16,7 @@ type Props = {
 export const SwipableItem: React.FC<Props> = ({onSwipe, children}) => {
   const {width} = Dimensions.get('window');
 
+  const h = useRef(new Animated.Value(1)).current;
   const pan = useRef(new Animated.ValueXY({x: 0, y: 0})).current;
   const panResponder = useRef(
     PanResponder.create({
@@ -30,6 +31,11 @@ export const SwipableItem: React.FC<Props> = ({onSwipe, children}) => {
         if (g.vx > 2 || g.dx > 200 / 2 || g.dx < -200 / 2) {
           Animated.spring(pan, {
             toValue: {x: g.dx < 0 ? -width : width, y: 0},
+            useNativeDriver: true,
+          }).start();
+
+          Animated.spring(h, {
+            toValue: 0,
             useNativeDriver: true,
           }).start();
 
@@ -54,7 +60,7 @@ export const SwipableItem: React.FC<Props> = ({onSwipe, children}) => {
 
   return (
     <Animated.View
-      style={[{transform: pan.getTranslateTransform()}]}
+      style={{transform: pan.getTranslateTransform()}}
       {...panResponder.panHandlers}>
       {children}
     </Animated.View>
