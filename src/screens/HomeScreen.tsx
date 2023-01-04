@@ -8,7 +8,8 @@ import {Logo} from '../components/Logo';
 import {FloatButton} from '../components/FloatButton';
 import {Task} from '../components/Task';
 import {useAppDispatch, useAppSelector} from '../redux';
-import {completeTask} from '../redux/taskSlice';
+import {completeTask, deleteTask} from '../redux/taskSlice';
+import {SwipableItem} from '../components/SwipeList';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home', 'MyStack'>;
 
@@ -21,6 +22,9 @@ export const HomeScreen = ({navigation}: Props) => {
   const handleCompleteTask = (id: number) => {
     dispatch(completeTask(id));
   };
+  const handleDeleteTask = (id: number) => {
+    dispatch(deleteTask(id));
+  };
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -32,12 +36,13 @@ export const HomeScreen = ({navigation}: Props) => {
           <Logo />
         </View>
         {tasks.map(task => (
-          <Task
-            key={task.id}
-            label={task.label}
-            completed={task.completed}
-            onComplete={() => handleCompleteTask(task.id)}
-          />
+          <SwipableItem key={task.id} onSwipe={() => handleDeleteTask(task.id)}>
+            <Task
+              label={`${task.id} ${task.label}`}
+              completed={task.completed}
+              onComplete={() => handleCompleteTask(task.id)}
+            />
+          </SwipableItem>
         ))}
       </ScrollView>
       <FloatButton onPress={handleAddTask} />
